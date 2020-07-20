@@ -5,9 +5,10 @@ import { ImagesController } from './images/images.controller';
 import { ImagesService } from './images/images.service';
 import { ImagesModule } from './images/images.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [ImagesModule],
+  imports: [ImagesModule, DatabaseModule],
   controllers: [AppController, ImagesController],
   providers: [AppService, ImagesService],
 })

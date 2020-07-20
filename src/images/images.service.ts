@@ -1,15 +1,21 @@
-import { Injectable } from '@nestjs/common';
-import { Image } from './interfaces/image.interface';
+import { Injectable, Inject } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { Image } from './image.entity';
+import { CreateImageDto } from './dto/create-image-dto';
 
 @Injectable()
 export class ImagesService {
-  private readonly images: Image[] = [];
+  constructor(
+    @Inject('IMAGE_REPOSITORY')
+    private imageRepository: Repository<Image>,
+  ) {}
 
-  create(image: Image): void {
-    this.images.push(image);
+  create(image: CreateImageDto): void {
+    const imageEntity = this.imageRepository.create(image);
+    this.imageRepository.save(imageEntity);
   }
 
-  findAll(): Image[] {
-    return this.images;
+  findAll(): Promise<Image[]> {
+    return this.imageRepository.find();
   }
 }
